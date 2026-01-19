@@ -14,7 +14,8 @@ export async function profileget(req, env) {
 export async function profileput(req, env) {
     const user = await requireAuth(req, env);
     if (!user) return json({ error: "Unauthorized" }, 401);
-    const { name, role, email, phone } = await req.json();
+    const body = await req.json();
+    const { name, role, email, phone } = body;
     await env.cldb.prepare(
         "UPDATE users SET name = ?, role = ?, email = ?, phone = ? WHERE user_id = ?"
     ).bind(name, role, email, phone, user.user_id).run();
