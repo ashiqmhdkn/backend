@@ -5,6 +5,8 @@ import json from "./json";
 import { profileget, profileput } from "./profile";
 import { videoget, videoput } from "./video";
 import { coursesget, coursespost, coursesdelete } from "./coures";
+import { coursesget, coursespost } from "./coures";
+import { adminusersget, updateusers, deleteusers } from "./admin";
 
 export default {
 	async fetch(req, env, ctx) {
@@ -24,6 +26,9 @@ export default {
 		else if (path === "/courses" && method === "DELETE") return coursesdelete(req, env);
 		else if (path === "/units" && method === "GET") return unitsget(req, env);
 		else if (path === "/units" && method === "DELETE") return unitsdelete(req, env);
+		else if (path === "/admin/users" && method === "GET") return adminusersget(req, env);
+		else if (path === "/admin/users" && method === "PUT") return updateusers(req, env);
+		else if (path === "/admin/users" && method === "DELETE") return deleteusers(req, env);
 
 		return new Response("Not Found", { status: 404 });
 	},
