@@ -1,5 +1,5 @@
-import json from "./json";
-import { requireAuth } from "./auth";
+import json from "./util/json";
+import { requireAuth } from "./auth/auth";
 
 export async function unitsget(req, env) {
     const user = await requireAuth(req, env);
@@ -18,7 +18,7 @@ export async function unitspost(req, env) {
     await env.cldb.prepare(
         "INSERT INTO units (unit_id, title, unit_image, subject_id, created_at) VALUES (?, ?, ?, ?, ?, ?)"
     ).bind(id, title, unit_image, subject_id, created_at).run();
-    return json({ success: true, message: "Unit created successfully"+title });
+    return json({ success: true, message: "Unit created successfully" + title });
 }
 export async function unitsdelete(req, env) {
     const user = await requireAuth(req, env);

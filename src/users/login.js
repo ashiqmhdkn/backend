@@ -1,4 +1,4 @@
-import json from "./json";
+import json from "../util/json";
 import { createToken, verifyToken } from "./auth";
 
 export default async function login(req, env) {

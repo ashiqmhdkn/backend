@@ -1,14 +1,14 @@
-import { createToken, verifyToken } from "./auth";
-import signup from "./signup";
-import login from "./login";
-import json from "./json";
+import { createToken, verifyToken } from "./users/auth";
+import signup from "./users/signup";
+import login from "./users/login";
+import json from "./util/json";
 import { profileget, profileput } from "./profile";
-import { videoget, videoput } from "./video";
-import { coursesget, coursespost, coursesdelete } from "./coures";
+import { videoget, videoput } from "./util/video";
+import { coursesget, coursespost, coursesdelete } from "./course/course";
 import { adminusersget, updateusers, deleteusers } from "./admin";
 import { unitsget, unitsdelete } from "./units";
 import { subjectsget, subjectsdelete, subjectspost } from "./subjects";
-import { uploadVideo, uploadImage } from "./upload";
+import { uploadVideo, uploadImage } from "./util/upload";
 
 export default {
 	async fetch(req, env, ctx) {

@@ -1,5 +1,5 @@
-import json from "./json";
-import { requireAuth } from "./auth";
+import json from "../util/json";
+import { requireAuth } from "../users/auth";
 
 export async function coursesget(req, env, url) {
     const user = await requireAuth(req, env);
