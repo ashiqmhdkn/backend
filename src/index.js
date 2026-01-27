@@ -2,12 +2,12 @@ import { createToken, verifyToken } from "./users/auth";
 import signup from "./users/signup";
 import login from "./users/login";
 import json from "./util/json";
-import { profileget, profileput } from "./profile";
+import { profileget, profileput } from "./users/profile";
 import { videoget, videoput } from "./util/video";
 import { coursesget, coursespost, coursesdelete } from "./course/course";
-import { adminusersget, updateusers, deleteusers } from "./admin";
-import { unitsget, unitsdelete } from "./units";
-import { subjectsget, subjectsdelete, subjectspost } from "./subjects";
+import { adminusersget, updateusers, deleteusers } from "./users/admin";
+import { unitsget, unitsdelete, unitspost } from "./course/units";
+import { subjectsget, subjectsdelete, subjectspost } from "./course/subjects";
 import { uploadVideo, uploadImage } from "./util/upload";
 
 export default {
@@ -28,6 +28,7 @@ export default {
 		else if (path === "/courses" && method === "DELETE") return coursesdelete(req, env);
 		else if (path === "/units" && method === "GET") return unitsget(req, env);
 		else if (path === "/units" && method === "DELETE") return unitsdelete(req, env);
+		else if (path === "/units" && method === "POST") return unitspost(req, env);
 		else if (path === "/subjects" && method === "GET") return subjectsget(req, env);
 		else if (path === "/subjects" && method === "DELETE") return subjectsdelete(req, env);
 		else if (path === "/subjects" && method === "POST") return subjectspost(req, env);

@@ -35,8 +35,22 @@ export async function uploadImage(req, env) {
     return json({ success: true, key: key, message: "Image uploaded successfully" });
 }
 
-export async function uploadFileToStorage(file, folder, env) {
-    const key = `${folder}/${crypto.randomUUID()}-${file.name}`;
-    await env.files.put(key, file);
+export async function uploadFileToStorage(file, folder, name, env) {
+    if (!file) throw new Error("File is required");
+    if (!env?.files) throw new Error("R2 binding 'files' not found");
+
+    const filename = name || `${crypto.randomUUID()}-${file.name}`;
+    const key = `${folder}/${filename}`;
+
+    await env.files.put(
+        key,
+        file.stream(),           // ✅ REQUIRED
+        {
+            httpMetadata: {
+                contentType: file.type || "application/octet-stream"
+            }
+        }
+    );
+
     return key;
 }

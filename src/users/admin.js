@@ -1,5 +1,5 @@
-import json from "./util/json";
-import { requireAuth } from "./users/auth";
+import json from "../util/json";
+import { requireAuth } from "./auth";
 
 const adminusersget = async (req, env) => {
     const user = await requireAuth(req, env);
