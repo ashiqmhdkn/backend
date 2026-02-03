@@ -8,7 +8,8 @@ import { coursesget, coursespost, coursesdelete } from "./course/course";
 import { adminusersget, updateusers, deleteusers } from "./users/admin";
 import { unitsget, unitsdelete, unitspost } from "./course/units";
 import { subjectsget, subjectsdelete, subjectspost } from "./course/subjects";
-import { uploadVideo, uploadImage } from "./util/upload";
+import { getVideoUploadLink, uploadImage } from "./util/upload";
+import { streamWebhook } from "./util/video";
 
 export default {
 	async fetch(req, env, ctx) {
@@ -32,9 +33,9 @@ export default {
 		else if (path === "/subjects" && method === "GET") return subjectsget(req, env);
 		else if (path === "/subjects" && method === "DELETE") return subjectsdelete(req, env);
 		else if (path === "/subjects" && method === "POST") return subjectspost(req, env);
-		else if (path === "/upload/video" && method === "PUT") return uploadVideo(req, env);
+		else if (path === "/upload/video" && method === "GET") return getVideoUploadLink(req, env);
+		else if (path === "/stream/webhook" && method === "POST") return streamWebhook(req, env);
 		else if (path === "/upload/image" && method === "PUT") return uploadImage(req, env);
-
 		else if (path === "/admin/users" && method === "GET") return adminusersget(req, env);
 		else if (path === "/admin/users" && method === "PUT") return updateusers(req, env);
 		else if (path === "/admin/users" && method === "DELETE") return deleteusers(req, env);

@@ -1,19 +1,54 @@
 import json from "./json";
 import { requireAuth } from "../users/auth";
 
+export async function getVideoUploadLink(req, env) {
+    const user = await requireAuth(req, env);
+    if (!user) return json({ error: "Unauthorized" }, 401);
+
+    const res = await fetch(
+        `https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/stream/direct_upload`,
+        {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${env.CF_STREAM_API_TOKEN}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                expiry: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+                maxDurationSeconds: 3600,
+                metadata: {
+                    user_id: "user_id"
+                }
+            }),
+        }
+    );
+
+    const data = await res.json();
+
+    if (!data.success) {
+        return json({ error: "Failed to create upload link", data: data }, 500);
+    }
+
+    return json({
+        success: true,
+        upload_url: data.result.uploadURL,
+        video_id: data.result.uid
+    });
+}
+
 export async function uploadVideo(req, env) {
     const user = await requireAuth(req, env);
     if (!user) return json({ error: "Unauthorized" }, 401);
 
     const formData = await req.formData();
-    const file = formData.get("file");
+    const video = formData.get("video");
 
-    if (!file || !(file instanceof File)) {
-        return json({ error: "File is required" }, 400);
+    if (!video || !(video instanceof File)) {
+        return json({ error: "Video is required" }, 400);
     }
 
-    const key = `videos/${crypto.randomUUID()}-${file.name}`;
-    await env.files.put(key, file);
+    const key = `videos/${crypto.randomUUID()}-${video.name}`;
+    await env.files.put(key, video);
 
     return json({ success: true, key: key, message: "Video uploaded successfully" });
 }
